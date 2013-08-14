@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+
+<!--
+  Note that this plugin doesn't define its own regions, it simply wraps TShock regions for the houses and names them in the
+  format "*H_<Owner>:<Index>" where <Owner> is the owner of the house region and <Index> automatically increases with each new
+  house the owner defines.
+-->
+<HouseRegionsConfiguration
+  xmlns="http://github.com/CoderCow/HouseRegions-Plugin"
+  
+  Version="1.0"
+>
+  <!--
+    The maximum amount of houses a player can own. Set to 0 for unlimited.
+  -->
+  <MaxHousesPerUser>10</MaxHousesPerUser>
+
+  <MinHouseSize>
+    <TotalTiles>25</TotalTiles>
+    <Width>8</Width>
+    <Height>4</Height>
+  </MinHouseSize>
+
+  <MaxHouseSize>
+    <TotalTiles>7500</TotalTiles>
+    <Width>150</Width>
+    <Height>150</Height>
+  </MaxHouseSize>
+
+  <!--
+    Whether house regions can overlap with TShock regions or not.
+      
+    NOTE: House regions can never overlap with other house regions as long as the owner differs.
+          They can always overlap with TShock regions if the TShock region's name is prefixed with a star (*), independent  
+          of this setting.
+          Housing regions can never overlap, except they're owned by the same user.
+  -->
+  <AllowTShockRegionOverlapping>false</AllowTShockRegionOverlapping>
+
+  <!--
+    The default z-index for new house regions.
+  -->
+  <DefaultZIndex>0</DefaultZIndex>
+</HouseRegionsConfiguration>
