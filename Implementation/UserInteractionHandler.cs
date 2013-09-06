@@ -309,9 +309,6 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
           this.HouseInfoCommand_HelpCallback(args);
           return;
         }
-
-        if (!PaginationTools.TryParsePageNumber(args.Parameters, 1, args.Player, out pageNumber))
-          return;
         
         args.Player.SendErrorMessage("Proper syntax: /house info [page]");
         args.Player.SendInfoMessage("Type /house info help to get more information about this command.");
