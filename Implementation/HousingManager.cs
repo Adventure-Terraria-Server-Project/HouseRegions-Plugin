@@ -10,21 +10,12 @@ using TShockAPI.DB;
 
 namespace Terraria.Plugins.CoderCow.HouseRegions {
   public class HousingManager {
-    #region [Constants]
     private const string HouseRegionNameAppendix = "*H_";
     private const char HouseRegionNameNumberSeparator = ':';
-    #endregion
 
-    #region [Property: Trace]
-    private readonly PluginTrace trace;
-
-    public PluginTrace Trace {
-      get { return this.trace; }
-    }
-    #endregion
-
-    #region [Property: Config]
     private Configuration config;
+
+    public PluginTrace Trace { get; private set; }
 
     public Configuration Config {
       get { return this.config; }
@@ -33,20 +24,16 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
         this.config = value;
       }
     }
-    #endregion
 
 
-    #region [Method: Constructor]
     public HousingManager(PluginTrace trace, Configuration config) {
       Contract.Requires<ArgumentNullException>(trace != null);
       Contract.Requires<ArgumentNullException>(config != null);
 
-      this.trace = trace;
+      this.Trace = trace;
       this.config = config;
     }
-    #endregion
 
-    #region [Methods: CreateHouseRegion, ToHouseRegionName]
     public void CreateHouseRegion(TSPlayer player, Rectangle area, bool checkOverlaps = true, bool checkPermissions = false) {
       Contract.Requires<ArgumentNullException>(player != null);
       Contract.Requires<PlayerNotLoggedInException>(player.IsLoggedIn);
@@ -96,9 +83,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
         HousingManager.HouseRegionNameAppendix, owner, HousingManager.HouseRegionNameNumberSeparator, houseIndex
       );
     }
-    #endregion
 
-    #region [Methods: TryGetHouseRegionAtPlayer, TryGetHouseRegionData, IsHouseRegion, CheckHouseRegionOverlap, CheckHouseRegionValidSize]
     public bool TryGetHouseRegionAtPlayer(TSPlayer player, out string owner, out int houseIndex, out Region region) {
       Contract.Requires<ArgumentNullException>(player != null);
 
@@ -194,6 +179,5 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
       Configuration.HouseSizeConfig dummy;
       return this.CheckHouseRegionValidSize(regionArea, out dummy);
     }
-    #endregion
   }
 }

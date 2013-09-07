@@ -10,32 +10,11 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
   public class Configuration {
     #region [Nested: HouseSizeConfig]
     public struct HouseSizeConfig {
-      #region [Property: TotalTiles]
-      private readonly int totalTiles;
-
-      public int TotalTiles {
-        get { return this.totalTiles; }
-      }
-      #endregion
-
-      #region [Property: Width]
-      private readonly int width;
-
-      public int Width {
-        get { return this.width; }
-      }
-      #endregion
-
-      #region [Property: Height]
-      private readonly int height;
-
-      public int Height {
-        get { return this.height; }
-      }
-      #endregion
+      public int TotalTiles { get; private set; }
+      public int Width { get; private set; }
+      public int Height { get; private set; }
 
 
-      #region [Method: Static FromXmlElement]
       public static HouseSizeConfig FromXmlElement(XmlElement rootElement) {
         Contract.Requires<ArgumentNullException>(rootElement != null);
 
@@ -45,69 +24,24 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
 
         return new HouseSizeConfig(totalTiles, width, height);
       }
-      #endregion
 
-      #region [Method: Constructor]
-      public HouseSizeConfig(int totalTiles, int width, int height) {
-        this.totalTiles = totalTiles;
-        this.width = width;
-        this.height = height;
+      public HouseSizeConfig(int totalTiles, int width, int height): this() {
+        this.TotalTiles = totalTiles;
+        this.Width = width;
+        this.Height = height;
       }
-      #endregion
     }
     #endregion
 
-    #region [Constants]
     public const string CurrentVersion = "1.0";
-    #endregion
 
-    #region [Property: MaxHousesPerUser]
-    private int maxHousesPerUser;
-
-    public int MaxHousesPerUser {
-      get { return this.maxHousesPerUser; }
-      set { this.maxHousesPerUser = value; }
-    }
-    #endregion
-
-    #region [Property: MinSize]
-    private HouseSizeConfig minSize;
-
-    public HouseSizeConfig MinSize {
-      get { return this.minSize; }
-      set { this.minSize = value; }
-    }
-    #endregion
-
-    #region [Property: MaxSize]
-    private HouseSizeConfig maxSize;
-
-    public HouseSizeConfig MaxSize {
-      get { return this.maxSize; }
-      set { this.maxSize = value; }
-    }
-    #endregion
-
-    #region [Property: AllowTShockRegionOverlapping]
-    private bool allowTShockRegionOverlapping;
-
-    public bool AllowTShockRegionOverlapping {
-      get { return this.allowTShockRegionOverlapping; }
-      set { this.allowTShockRegionOverlapping = value; }
-    }
-    #endregion
-
-    #region [Property: DefaultZIndex]
-    private int defaultZIndex;
-
-    public int DefaultZIndex {
-      get { return this.defaultZIndex; }
-      set { this.defaultZIndex = value; }
-    }
-    #endregion
+    public int MaxHousesPerUser { get; set; }
+    public HouseSizeConfig MinSize { get; set; }
+    public HouseSizeConfig MaxSize { get; set; }
+    public bool AllowTShockRegionOverlapping { get; set; }
+    public int DefaultZIndex { get; set; }
 
 
-    #region [Methods: Static Read]
     public static Configuration Read(string filePath) {
       XmlReaderSettings configReaderSettings = new XmlReaderSettings {
         ValidationType = ValidationType.Schema,
@@ -137,18 +71,13 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
       }
 
       Configuration resultingConfig = new Configuration();
-      resultingConfig.maxHousesPerUser = int.Parse(rootElement["MaxHousesPerUser"].InnerText);
-      resultingConfig.minSize = HouseSizeConfig.FromXmlElement(rootElement["MinHouseSize"]);
-      resultingConfig.maxSize = HouseSizeConfig.FromXmlElement(rootElement["MaxHouseSize"]);
-      resultingConfig.allowTShockRegionOverlapping = BoolEx.ParseEx(rootElement["AllowTShockRegionOverlapping"].InnerText);
-      resultingConfig.defaultZIndex = int.Parse(rootElement["DefaultZIndex"].InnerText);
+      resultingConfig.MaxHousesPerUser = int.Parse(rootElement["MaxHousesPerUser"].InnerText);
+      resultingConfig.MinSize = HouseSizeConfig.FromXmlElement(rootElement["MinHouseSize"]);
+      resultingConfig.MaxSize = HouseSizeConfig.FromXmlElement(rootElement["MaxHouseSize"]);
+      resultingConfig.AllowTShockRegionOverlapping = BoolEx.ParseEx(rootElement["AllowTShockRegionOverlapping"].InnerText);
+      resultingConfig.DefaultZIndex = int.Parse(rootElement["DefaultZIndex"].InnerText);
 
       return resultingConfig;
     }
-    #endregion
-
-    #region [Method: Constructor]
-    public Configuration() {}
-    #endregion
   }
 }

@@ -13,9 +13,7 @@ using TShockAPI;
 namespace Terraria.Plugins.CoderCow.HouseRegions {
   [APIVersion(1, 12)]
   public class HouseRegionsPlugin: TerrariaPlugin {
-    #region [Constants]
     private const string TracePrefix = @"[Housing] ";
-
     public const string Define_Permission          = "houseregions_define";
     public const string Delete_Permission          = "houseregions_delete";
     public const string Share_Permission           = "houseregions_share";
@@ -23,84 +21,29 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
     public const string NoLimits_Permission        = "houseregions_nolimits";
     public const string HousingMaster_Permission   = "houseregions_housingmaster";
     public const string Cfg_Permission             = "houseregions_cfg";
-    #endregion
-
-    #region [Properties: Static DataDirectory, Static ConfigFilePath]
-    public static string DataDirectory {
-      get {
-        return Path.Combine(TShock.SavePath, "House Regions");
-      }
-    }
-
-    public static string ConfigFilePath {
-      get {
-        return Path.Combine(HouseRegionsPlugin.DataDirectory, "Config.xml");
-      }
-    }
-    #endregion
-
-    #region [Property: Static LatestInstance]
-    private static HouseRegionsPlugin latestInstance;
-
-    public static HouseRegionsPlugin LatestInstance {
-      get { return HouseRegionsPlugin.latestInstance; }
-    }
-    #endregion
-
-    #region [Property: Trace]
-    private PluginTrace trace;
-
-    public PluginTrace Trace {
-      get { return this.trace; }
-    }
-    #endregion
-
-    #region [Property: PluginInfo]
-    private readonly PluginInfo pluginInfo;
-
-    protected PluginInfo PluginInfo {
-      get { return this.pluginInfo; }
-    }
-    #endregion
-
-    #region [Property: Config]
-    private Configuration config;
-
-    protected Configuration Config {
-      get { return this.config; }
-    }
-    #endregion
-
-    #region [Property: GetDataHookHandler]
-    private GetDataHookHandler getDataHookHandler;
-
-    protected GetDataHookHandler GetDataHookHandler {
-      get { return this.getDataHookHandler; }
-    }
-    #endregion
-
-    #region [Property: HousingManager]
-    private HousingManager housingManager;
-
-    public HousingManager HousingManager {
-      get { return this.housingManager; }
-    }
-    #endregion
-
-    #region [Property: UserInteractionHandler]
-    private UserInteractionHandler userInteractionHandler;
-
-    protected UserInteractionHandler UserInteractionHandler {
-      get { return this.userInteractionHandler; }
-    }
-    #endregion
 
     private bool hooksEnabled;
 
+    public static string DataDirectory {
+      get { return Path.Combine(TShock.SavePath, "House Regions"); }
+    }
 
-    #region [Method: Constructor]
+    public static string ConfigFilePath {
+      get { return Path.Combine(HouseRegionsPlugin.DataDirectory, "Config.xml"); }
+    }
+
+    public static HouseRegionsPlugin LatestInstance { get; private set; }
+
+    internal PluginTrace Trace { get; private set; }
+    protected PluginInfo PluginInfo { get; private set; }
+    protected Configuration Config { get; private set; }
+    protected GetDataHookHandler GetDataHookHandler { get; private set; }
+    protected UserInteractionHandler UserInteractionHandler { get; private set; }
+    public HousingManager HousingManager { get; private set; }
+
+
     public HouseRegionsPlugin(Main game): base(game) {
-      this.pluginInfo = new PluginInfo(
+      this.PluginInfo = new PluginInfo(
         "House Regions",
         Assembly.GetAssembly(typeof(HouseRegionsPlugin)).GetName().Version,
         "",
@@ -114,12 +57,11 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
         Debug.Listeners.Add(new ConsoleTraceListener());
       #endif
 
-      this.trace = new PluginTrace(HouseRegionsPlugin.TracePrefix);
-      HouseRegionsPlugin.latestInstance = this;
+      this.Trace = new PluginTrace(HouseRegionsPlugin.TracePrefix);
+      HouseRegionsPlugin.LatestInstance = this;
     }
-    #endregion
 
-    #region [Methods: Initialize, Game_PostInitialize]
+    #region [Initialization]
     public override void Initialize() {
       GameHooks.PostInitialize += this.Game_PostInitialize;
 
@@ -135,7 +77,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
       if (!this.InitConfig())
         return;
 
-      this.housingManager = new HousingManager(this.Trace, this.Config);
+      this.HousingManager = new HousingManager(this.Trace, this.Config);
       this.InitUserInteractionHandler();
 
       this.hooksEnabled = true;
@@ -144,7 +86,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
     private bool InitConfig() {
       if (File.Exists(HouseRegionsPlugin.ConfigFilePath)) {
         try {
-          this.config = Configuration.Read(HouseRegionsPlugin.ConfigFilePath);
+          this.Config = Configuration.Read(HouseRegionsPlugin.ConfigFilePath);
         } catch (Exception ex) {
           this.Trace.WriteLineError(
             "Reading the configuration file failed. This plugin will be disabled. Exception details:\n{0}", ex
@@ -154,7 +96,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
           return false;
         }
       } else {
-        this.config = new Configuration();
+        this.Config = new Configuration();
       }
 
       return true;
@@ -165,29 +107,29 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
         if (this.isDisposed)
           return null;
 
-        this.config = Configuration.Read(HouseRegionsPlugin.ConfigFilePath);
-        this.housingManager.Config = this.Config;
+        this.Config = Configuration.Read(HouseRegionsPlugin.ConfigFilePath);
+        this.HousingManager.Config = this.Config;
 
-        return this.config;
+        return this.Config;
       };
-      this.userInteractionHandler = new UserInteractionHandler(
+      this.UserInteractionHandler = new UserInteractionHandler(
         this.Trace, this.PluginInfo, this.Config, this.HousingManager, reloadConfiguration
       );
     }
     #endregion
 
-    #region [Methods: Server Hook Handling]
+    #region [Hook Handling]
     private void AddHooks() {
-      if (this.getDataHookHandler != null)
+      if (this.GetDataHookHandler != null)
         throw new InvalidOperationException("Hooks already registered.");
       
-      this.getDataHookHandler = new GetDataHookHandler(this.Trace, true);
+      this.GetDataHookHandler = new GetDataHookHandler(this.Trace, true);
       this.GetDataHookHandler.TileEdit += this.Net_TileEdit;
     }
 
     private void RemoveHooks() {
-      if (this.getDataHookHandler != null) 
-        this.getDataHookHandler.Dispose();
+      if (this.GetDataHookHandler != null) 
+        this.GetDataHookHandler.Dispose();
 
       GameHooks.PostInitialize -= this.Game_PostInitialize;
     }
@@ -230,10 +172,12 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
         return;
     
       if (isDisposing) {
-        if (this.getDataHookHandler != null)
-          this.getDataHookHandler.Dispose();
-        if (this.userInteractionHandler != null)
-          this.userInteractionHandler.Dispose();
+        if (this.GetDataHookHandler != null)
+          this.GetDataHookHandler.Dispose();
+        if (this.UserInteractionHandler != null)
+          this.UserInteractionHandler.Dispose();
+
+        this.RemoveHooks();
       }
 
       base.Dispose(isDisposing);

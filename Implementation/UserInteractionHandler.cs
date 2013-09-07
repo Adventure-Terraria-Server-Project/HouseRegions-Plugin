@@ -20,7 +20,6 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
     private class CommandExecDummyPlayer: TSPlayer {
       private readonly Action<string,Color> sendMessageHandler;
 
-      #region [Methods: Constructor, SendMessage]
       public CommandExecDummyPlayer(
         TSPlayer originalPlayer, Action<string,Color> sendMessageHandler
       ): base(originalPlayer.Name) {
@@ -36,44 +35,15 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
         if (this.sendMessageHandler != null)
           this.sendMessageHandler(msg, color);
       }
-      #endregion
     }
     #endregion
 
-    #region [Property: PluginInfo]
-    private readonly PluginInfo pluginInfo;
-
-    protected PluginInfo PluginInfo {
-      get { return this.pluginInfo; }
-    }
-    #endregion
-
-    #region [Property: Config]
-    private Configuration config;
-
-    protected Configuration Config {
-      get { return this.config; }
-    }
-    #endregion
-
-    #region [Property: HousingManager]
-    private readonly HousingManager housingManager;
-
-    protected HousingManager HousingManager {
-      get { return this.housingManager; }
-    }
-    #endregion
-
-    #region [Property: ReloadConfigurationCallback]
-    private Func<Configuration> reloadConfigurationCallback;
-
-    protected Func<Configuration> ReloadConfigurationCallback {
-      get { return this.reloadConfigurationCallback; }
-    }
-    #endregion
+    protected PluginInfo PluginInfo { get; private set; }
+    protected Configuration Config { get; private set; }
+    protected HousingManager HousingManager { get; private set; }
+    protected Func<Configuration> ReloadConfigurationCallback { get; private set; }
 
 
-    #region [Method: Constructor]
     public UserInteractionHandler(
       PluginTrace trace, PluginInfo pluginInfo, Configuration config, HousingManager housingManager,
       Func<Configuration> reloadConfigurationCallback
@@ -84,10 +54,10 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
       Contract.Requires<ArgumentNullException>(housingManager != null);
       Contract.Requires<ArgumentNullException>(reloadConfigurationCallback != null);
 
-      this.pluginInfo = pluginInfo;
-      this.config = config;
-      this.housingManager = housingManager;
-      this.reloadConfigurationCallback = reloadConfigurationCallback;
+      this.PluginInfo = pluginInfo;
+      this.Config = config;
+      this.HousingManager = housingManager;
+      this.ReloadConfigurationCallback = reloadConfigurationCallback;
 
       #region Command Setup
       base.RegisterCommand(
@@ -95,7 +65,6 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
       );
       #endregion
     }
-    #endregion
 
     #region [Command Handling /house]
     private void RootCommand_Exec(CommandArgs args) {
@@ -251,7 +220,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
 
           this.PluginTrace.WriteLineInfo("Reloading configuration file.");
           try {
-            this.config = this.ReloadConfigurationCallback();
+            this.Config = this.ReloadConfigurationCallback();
             this.PluginTrace.WriteLineInfo("Configuration file successfully reloaded.");
 
             if (args.Player != TSPlayer.Server)
@@ -948,7 +917,6 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
     }
     #endregion
 
-    #region [Utility Methods]
     private bool TryGetHouseRegionAtPlayer(TSPlayer player, out string owner, out Region region) {
       Contract.Requires<ArgumentNullException>(player != null);
 
@@ -997,7 +965,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
       this.SendAreaDottedFakeWires(player, area);
                                 
       System.Threading.Timer hideTimer = null;
-      hideTimer = new System.Threading.Timer((state) => {
+      hideTimer = new System.Threading.Timer(state => {
           this.SendAreaDottedFakeWires(player, area, false);
 
           // ReSharper disable AccessToModifiedClosure
@@ -1039,7 +1007,6 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
         toPlayer.SendErrorMessage("Max total blocks: {0} (you've tried to set {1}).", restrictingConfig.TotalTiles, area.Width * area.Height);
       }
     }
-    #endregion
 
     #region [IDisposable Implementation]
     protected override void Dispose(bool isDisposing) {
@@ -1047,7 +1014,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
         return;
       
       if (isDisposing)
-        this.reloadConfigurationCallback = null;
+        this.ReloadConfigurationCallback = null;
 
       base.Dispose(isDisposing);
     }
