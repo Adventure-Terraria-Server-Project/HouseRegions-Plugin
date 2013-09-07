@@ -71,5 +71,8 @@ houseregions_cfg
 
 Changelog
 ---------------------------------------------------------------------------------
+Version 1.1.0 [09/07/2013]
+  -Fixed some typos.
+
 Version 1.0.0 [08/14/2013]
   -First public release by CoderCow.

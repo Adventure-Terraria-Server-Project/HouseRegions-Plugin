@@ -416,11 +416,10 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
 
         // Mark 1 / 2
         if (point1 == DPoint.Empty || point2 == DPoint.Empty) {
-          if (point1 == DPoint.Empty) {
+          if (point1 == DPoint.Empty)
             point1 = tileLocation;
-          } else {
+          else
             point2 = tileLocation;
-          }
 
           playerLocal.SendTileSquare(tileLocation);
           this.SendFakeWireCross(playerLocal, tileLocation);
@@ -437,7 +436,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
             args.Player.SendMessage("mark a point outside the house to cancel.", Color.MediumSpringGreen);
             args.Player.SendMessage(string.Empty, Color.MediumSpringGreen);
           } else {
-            if (point1 == DPoint.Empty) {
+            if (point2 == DPoint.Empty) {
               args.Player.SendMessage("Second Mark", Color.IndianRed);
               args.Player.SendMessage("Mark the bottom right tile of your house by placing a wire using wrench", Color.MediumSpringGreen);
               args.Player.SendMessage("or by altering the tile otherwise.", Color.MediumSpringGreen);
