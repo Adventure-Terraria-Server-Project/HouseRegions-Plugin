@@ -72,6 +72,7 @@ houseregions_cfg
 Changelog
 ---------------------------------------------------------------------------------
 Version 1.1.0 [09/07/2013]
+  -Fixed /house resize not working for house masters on unowned houses.
   -Fixed a bug causing command help to not work for sub-commands of /house.
   -Fixed some typos.
 

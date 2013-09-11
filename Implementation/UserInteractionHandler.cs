@@ -550,7 +550,8 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
       }
 
       Region region;
-      if (!this.TryGetOwnedHouseRegionAtPlayer(args.Player, out region))
+      string owner;
+      if (!this.TryGetAccessibleHouseRegionAtPlayer(args.Player, out owner, out region))
         return;
 
       int amount;
@@ -594,7 +595,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
         return;
       }
 
-      if (this.HousingManager.CheckHouseRegionOverlap(args.Player.UserAccountName, newArea)) {
+      if (this.HousingManager.CheckHouseRegionOverlap(owner, newArea)) {
         if (this.Config.AllowTShockRegionOverlapping) {
           args.Player.SendErrorMessage("The house region would overlap either with another house not owned by you or");
           args.Player.SendErrorMessage("with a TShock region.");
@@ -666,7 +667,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
       }
 
       Region region;
-      if (!this.TryGetOwnedHouseRegionAtPlayer(args.Player, out region))
+      if (!this.TryGetAccessibleHouseRegionAtPlayer(args.Player, out region))
         return;
 
       if (!TShock.Regions.DeleteRegion(region.Name)) {
@@ -720,7 +721,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
         return;
 
       Region region;
-      if (!this.TryGetOwnedHouseRegionAtPlayer(args.Player, out region))
+      if (!this.TryGetAccessibleHouseRegionAtPlayer(args.Player, out region))
         return;
 
       if (!TShock.Regions.AddNewUser(region.Name, tsUser.Name)) {
@@ -774,7 +775,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
         return;
 
       Region region;
-      if (!this.TryGetOwnedHouseRegionAtPlayer(args.Player, out region))
+      if (!this.TryGetAccessibleHouseRegionAtPlayer(args.Player, out region))
         return;
 
       if (!TShock.Regions.RemoveUser(region.Name, tsUser.Name)) {
@@ -830,7 +831,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
       }
 
       Region region;
-      if (!this.TryGetOwnedHouseRegionAtPlayer(args.Player, out region))
+      if (!this.TryGetAccessibleHouseRegionAtPlayer(args.Player, out region))
         return;
 
       if (!TShock.Regions.AllowGroup(region.Name, tsGroup.Name)) {
@@ -886,7 +887,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
       }
 
       Region region;
-      if (!this.TryGetOwnedHouseRegionAtPlayer(args.Player, out region))
+      if (!this.TryGetAccessibleHouseRegionAtPlayer(args.Player, out region))
         return;
 
       if (!TShock.Regions.RemoveGroup(region.Name, tsGroup.Name)) {
@@ -930,7 +931,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
       return true;
     }
 
-    private bool TryGetOwnedHouseRegionAtPlayer(TSPlayer player, out string owner, out Region region) {
+    private bool TryGetAccessibleHouseRegionAtPlayer(TSPlayer player, out string owner, out Region region) {
       Contract.Requires<ArgumentNullException>(player != null);
 
       if (!this.TryGetHouseRegionAtPlayer(player, out owner, out region))
@@ -944,9 +945,9 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
       return true;
     }
 
-    private bool TryGetOwnedHouseRegionAtPlayer(TSPlayer player, out Region region) {
+    private bool TryGetAccessibleHouseRegionAtPlayer(TSPlayer player, out Region region) {
       string dummy;
-      return this.TryGetOwnedHouseRegionAtPlayer(player, out dummy, out region);
+      return this.TryGetAccessibleHouseRegionAtPlayer(player, out dummy, out region);
     }
 
     private void SendFakeTileWire(TSPlayer player, DPoint tileLocation) {
