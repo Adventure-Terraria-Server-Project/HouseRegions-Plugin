@@ -113,6 +113,8 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
 
           List<string> terms = new List<string>();
           terms.Add("/house info");
+          if (args.Player.Group.HasPermission(HouseRegionsPlugin.HousingMaster_Permission))
+            terms.Add("/house summary");
           if (args.Player.Group.HasPermission(HouseRegionsPlugin.Define_Permission)) {
             terms.Add("/house define");
             terms.Add("/house resize");
@@ -138,6 +140,9 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
 
           return true;
         }
+        case "summary":
+          this.HouseSummaryCommand_Exec(args);
+          return true;
         case "info":
           this.HouseInfoCommand_Exec(args);
           return true;
@@ -266,6 +271,69 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
       }
 
       return true;
+    }
+    #endregion
+
+    #region [Command Handling /house summary]
+    private void HouseSummaryCommand_Exec(CommandArgs args) {
+      if (args == null || this.IsDisposed)
+        return;
+
+      int pageNumber = 1;
+      if (args.Parameters.Count > 2) {
+        if (args.Parameters[1].Equals("help", StringComparison.InvariantCultureIgnoreCase)) {
+          this.HouseSummaryCommand_HelpCallback(args);
+          return;
+        }
+        
+        args.Player.SendErrorMessage("Proper syntax: /house summary [page]");
+        args.Player.SendInfoMessage("Type /house summary help to get more information about this command.");
+        return;
+      }
+
+      var ownerHouses = new Dictionary<string,int>(TShock.Regions.Regions.Count);
+      for (int i = 0; i < TShock.Regions.Regions.Count; i++) {
+        Region tsRegion = TShock.Regions.Regions[i];
+        string owner;
+        int dummy;
+        if (!this.HousingManager.TryGetHouseRegionData(tsRegion.Name, out owner, out dummy))
+          continue;
+
+        int houseCount;
+        if (!ownerHouses.TryGetValue(owner, out houseCount))
+          ownerHouses.Add(owner, 1);
+        else
+          ownerHouses[owner] = houseCount + 1;
+      }
+
+      IEnumerable<string> ownerHousesTermSelector = ownerHouses.Select(
+        pair => string.Concat(pair.Key, " (", pair.Value, ")")
+      );
+
+      PaginationTools.SendPage(
+        args.Player, pageNumber, PaginationTools.BuildLinesFromTerms(ownerHousesTermSelector), new PaginationTools.Settings {
+          HeaderFormat = string.Format("House Owners ({{0}}/{{1}}):"),
+          FooterFormat = string.Format("Type /house summary {{0}} for more."),
+          NothingToDisplayString = "There are no house regions in this world."
+        }
+      );
+    }
+
+    private void HouseSummaryCommand_HelpCallback(CommandArgs args) {
+      if (args == null || this.IsDisposed)
+        return;
+
+      int pageNumber;
+      if (!PaginationUtil.TryParsePageNumber(args.Parameters, 2, args.Player, out pageNumber))
+        return;
+
+      switch (pageNumber) {
+        default:
+          args.Player.SendMessage("Command reference for /house summary (Page 1 of 1)", Color.Lime);
+          args.Player.SendMessage("/house summary [page]", Color.White);
+          args.Player.SendMessage("Displays all house owners and the amount of house regions they own.", Color.LightGray);
+          return;
+      }
     }
     #endregion
 

@@ -36,6 +36,7 @@ Commands
 ---------------------------------------------------------------------------------
 /House
 /House Commands
+/House Summary
 /House Info
 /House Define
 /House Resize <up|down|left|right> <amount>
@@ -65,13 +66,16 @@ houseregions_nolimits
   Can define houses without a maximum limit or size restrictions.
 
 houseregions_housingmaster
-  Can change settings of any house, either owned or not owned.
+  Can display a list of all house owners. Can change settings of any house, either 
+  owned or not owned.
 houseregions_cfg
   Can reload the configuration file.
 
 Changelog
 ---------------------------------------------------------------------------------
-Version 1.1.0 [09/07/2013]
+Version 1.1.0 [09/11/2013]
+  -Added /house summary to list all current house owners and the amount of owned
+   house regions.
   -Fixed /house resize not working for house masters on unowned houses.
   -Fixed a bug causing command help to not work for sub-commands of /house.
   -Fixed some typos.
