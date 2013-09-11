@@ -238,13 +238,13 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
       return false;
     }
 
-    private void RootCommand_HelpCallback(CommandArgs args) {
+    private bool RootCommand_HelpCallback(CommandArgs args) {
       if (args == null || this.IsDisposed)
-        return;
+        return true;
 
       int pageNumber;
-      if (!PaginationUtil.TryParsePageNumber(args.Parameters, 1, args.Player, out pageNumber))
-        return;
+      if (!PaginationUtil.TryParsePageNumber(args.Parameters, 1, null, out pageNumber))
+        return false;
 
       switch (pageNumber) {
         default:
@@ -264,6 +264,8 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
           args.Player.SendMessage("use the /house info command.", Color.LightGray);
           break;
       }
+
+      return true;
     }
     #endregion
 

@@ -72,6 +72,7 @@ houseregions_cfg
 Changelog
 ---------------------------------------------------------------------------------
 Version 1.1.0 [09/07/2013]
+  -Fixed a bug causing command help to not work for sub-commands of /house.
   -Fixed some typos.
 
 Version 1.0.0 [08/14/2013]

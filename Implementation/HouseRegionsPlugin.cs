@@ -22,7 +22,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
     public const string HousingMaster_Permission   = "houseregions_housingmaster";
     public const string Cfg_Permission             = "houseregions_cfg";
 
-    private bool hooksEnabled;
+    public static HouseRegionsPlugin LatestInstance { get; private set; }
 
     public static string DataDirectory {
       get { return Path.Combine(TShock.SavePath, "House Regions"); }
@@ -32,8 +32,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
       get { return Path.Combine(HouseRegionsPlugin.DataDirectory, "Config.xml"); }
     }
 
-    public static HouseRegionsPlugin LatestInstance { get; private set; }
-
+    private bool hooksEnabled;
     internal PluginTrace Trace { get; private set; }
     protected PluginInfo PluginInfo { get; private set; }
     protected Configuration Config { get; private set; }
