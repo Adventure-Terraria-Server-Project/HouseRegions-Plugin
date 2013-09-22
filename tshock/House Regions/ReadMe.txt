@@ -73,9 +73,10 @@ houseregions_cfg
 
 Changelog
 ---------------------------------------------------------------------------------
-Version 1.1.0 [09/11/2013]
+Version 1.1.0 [09/22/2013]
   -Added /house summary to list all current house owners and the amount of owned
    house regions.
+  -Added /house scan to display all nearby house regions by wires.
   -Fixed /house resize not working for house masters on unowned houses.
   -Fixed a bug causing command help to not work for sub-commands of /house.
   -Fixed some typos.

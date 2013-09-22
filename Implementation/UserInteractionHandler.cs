@@ -113,6 +113,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
 
           List<string> terms = new List<string>();
           terms.Add("/house info");
+          terms.Add("/house scan");
           if (args.Player.Group.HasPermission(HouseRegionsPlugin.HousingMaster_Permission))
             terms.Add("/house summary");
           if (args.Player.Group.HasPermission(HouseRegionsPlugin.Define_Permission)) {
@@ -145,6 +146,9 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
           return true;
         case "info":
           this.HouseInfoCommand_Exec(args);
+          return true;
+        case "scan":
+          this.HouseScanCommand_Exec(args);
           return true;
         case "define":
         case "def":
@@ -411,6 +415,70 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
           args.Player.SendMessage("/house info [page]", Color.White);
           args.Player.SendMessage("Displays several information about the house at your current positon.", Color.LightGray);
           args.Player.SendMessage("Will also display the boundaries of the house by wires.", Color.LightGray);
+          return;
+      }
+    }
+    #endregion
+
+    #region [Command Handling /house scan]
+    private void HouseScanCommand_Exec(CommandArgs args) {
+      if (args == null || this.IsDisposed)
+        return;
+
+      if (args.Parameters.Count > 1) {
+        if (args.Parameters[1].Equals("help", StringComparison.InvariantCultureIgnoreCase)) {
+          this.HouseScanCommand_HelpCallback(args);
+          return;
+        }
+        
+        args.Player.SendErrorMessage("Proper syntax: /house scan");
+        args.Player.SendInfoMessage("Type /house scan help to get more information about this command.");
+        return;
+      }
+
+      Point playerLocation = new Point(args.Player.TileX, args.Player.TileY);
+      List<Rectangle> houseAreasToDisplay = new List<Rectangle>(
+        from r in TShock.Regions.Regions
+        where Math.Sqrt(Math.Pow(playerLocation.X - r.Area.Center.X, 2) + Math.Pow(playerLocation.Y - r.Area.Center.Y, 2)) <= 50
+        select r.Area
+      );
+      if (houseAreasToDisplay.Count == 0) {
+        args.Player.SendSuccessMessage("There are no nearby house regions.");
+        return;
+      }
+
+      foreach (Rectangle regionArea in houseAreasToDisplay)
+        this.SendAreaDottedFakeWires(args.Player, regionArea);
+      args.Player.SendInfoMessage("Hold a wire or wire tool to see all nearby house regions.");
+
+      System.Threading.Timer hideTimer = null;
+      hideTimer = new System.Threading.Timer(state => {
+          foreach (Rectangle regionArea in houseAreasToDisplay)
+            this.SendAreaDottedFakeWires(args.Player, regionArea, false);
+
+          // ReSharper disable AccessToModifiedClosure
+          Debug.Assert(hideTimer != null);
+          hideTimer.Dispose();
+          // ReSharper restore AccessToModifiedClosure
+        },
+        null, 5000, Timeout.Infinite
+      );
+    }
+
+    private void HouseScanCommand_HelpCallback(CommandArgs args) {
+      if (args == null || this.IsDisposed)
+        return;
+
+      int pageNumber;
+      if (!PaginationUtil.TryParsePageNumber(args.Parameters, 2, args.Player, out pageNumber))
+        return;
+
+      switch (pageNumber) {
+        default:
+          args.Player.SendMessage("Command reference for /house scan (Page 1 of 1)", Color.Lime);
+          args.Player.SendMessage("/house scan", Color.White);
+          args.Player.SendMessage("Displays all house region boundaries close to your character's position", Color.LightGray);
+          args.Player.SendMessage("as wires.", Color.LightGray);
           return;
       }
     }
