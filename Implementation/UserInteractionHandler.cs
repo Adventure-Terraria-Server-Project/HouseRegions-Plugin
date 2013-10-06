@@ -607,9 +607,13 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
             tileLocation.Y >= houseArea.Top && tileLocation.Y <= houseArea.Bottom
           ) {
             try {
-              this.HousingManager.CreateHouseRegion(playerLocal, houseArea, true, true);
-              playerLocal.SendMessage("House was successfully created. Other players can no longer change blocks", Color.MediumSpringGreen);
-              playerLocal.SendMessage("inside the defined house region.", Color.MediumSpringGreen);
+              if (houseArea.Width == 0 || houseArea.Height == 0) {
+                playerLocal.SendErrorMessage("The house has to be at least one block high and wide.");
+              } else {
+                this.HousingManager.CreateHouseRegion(playerLocal, houseArea, true, true);
+                playerLocal.SendMessage("House was successfully created. Other players can no longer change blocks", Color.MediumSpringGreen);
+                playerLocal.SendMessage("inside the defined house region.", Color.MediumSpringGreen);
+              }
             } catch (InvalidHouseSizeException ex) {
               this.ExplainInvalidRegionSize(playerLocal, houseArea, ex.RestrictingConfig);
             } catch (HouseOverlapException) {
@@ -1088,14 +1092,14 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
 
     private void SendFakeTileWire(TSPlayer player, DPoint tileLocation) {
       Tile tile = TerrariaUtils.Tiles[tileLocation];
-      if (tile.wire)
+      if (tile.wire2())
         return;
 
       try {
-        tile.wire = true;
+        tile.wire2(true);
         player.SendTileSquare(tileLocation, 1);
       } finally {
-        tile.wire = false;
+        tile.wire2(false);
       }
     }
 

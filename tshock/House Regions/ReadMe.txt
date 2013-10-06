@@ -54,26 +54,28 @@ ingame.
 
 Permissions
 ---------------------------------------------------------------------------------
-houseregions_define
+houseregions.define
   Can define new or resize existing houses.
-houseregions_delete
+houseregions.delete
   Can delete existing houses.
-houseregions_share
+houseregions.share
   Can share houses.
-houseregions_sharewithgroups
+houseregions.sharewithgroups
   Can share houses with TShock groups.
-houseregions_nolimits
+houseregions.nolimits
   Can define houses without a maximum limit or size restrictions.
 
-houseregions_housingmaster
+houseregions.housingmaster
   Can display a list of all house owners. Can change settings of any house, either 
   owned or not owned.
-houseregions_cfg
+houseregions.cfg
   Can reload the configuration file.
 
 Changelog
 ---------------------------------------------------------------------------------
-Version 1.1.0 [09/22/2013]
+Version 1.1.0 [10/03/2013]
+  -Updated for Terraria 1.2 and TShock 4.2 pre.
+  -Changed the permission model to "houseregions.<perm>" ("_" to ".").
   -Added /house summary to list all current house owners and the amount of owned
    house regions.
   -Added /house scan to display all nearby house regions by wires.

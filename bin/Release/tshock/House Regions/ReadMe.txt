@@ -36,6 +36,7 @@ Commands
 ---------------------------------------------------------------------------------
 /House
 /House Commands
+/House Summary
 /House Info
 /House Define
 /House Resize <up|down|left|right> <amount>
@@ -53,23 +54,34 @@ ingame.
 
 Permissions
 ---------------------------------------------------------------------------------
-houseregions_define
+houseregions.define
   Can define new or resize existing houses.
-houseregions_delete
+houseregions.delete
   Can delete existing houses.
-houseregions_share
+houseregions.share
   Can share houses.
-houseregions_sharewithgroups
+houseregions.sharewithgroups
   Can share houses with TShock groups.
-houseregions_nolimits
+houseregions.nolimits
   Can define houses without a maximum limit or size restrictions.
 
-houseregions_housingmaster
-  Can change settings of any house, either owned or not owned.
-houseregions_cfg
+houseregions.housingmaster
+  Can display a list of all house owners. Can change settings of any house, either 
+  owned or not owned.
+houseregions.cfg
   Can reload the configuration file.
 
 Changelog
 ---------------------------------------------------------------------------------
+Version 1.1.0 [10/03/2013]
+  -Updated for Terraria 1.2 and TShock 4.2 pre.
+  -Changed the permission model to "houseregions.<perm>" ("_" to ".").
+  -Added /house summary to list all current house owners and the amount of owned
+   house regions.
+  -Added /house scan to display all nearby house regions by wires.
+  -Fixed /house resize not working for house masters on unowned houses.
+  -Fixed a bug causing command help to not work for sub-commands of /house.
+  -Fixed some typos.
+
 Version 1.0.0 [08/14/2013]
   -First public release by CoderCow.

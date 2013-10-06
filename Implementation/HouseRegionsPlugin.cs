@@ -7,20 +7,20 @@ using System.Reflection;
 using Terraria.Plugins.Common;
 using Terraria.Plugins.Common.Hooks;
 
-using Hooks;
+using TerrariaApi.Server;
 using TShockAPI;
 
 namespace Terraria.Plugins.CoderCow.HouseRegions {
-  [APIVersion(1, 12)]
+  [ApiVersion(1, 14)]
   public class HouseRegionsPlugin: TerrariaPlugin {
     private const string TracePrefix = @"[Housing] ";
-    public const string Define_Permission          = "houseregions_define";
-    public const string Delete_Permission          = "houseregions_delete";
-    public const string Share_Permission           = "houseregions_share";
-    public const string ShareWithGroups_Permission = "houseregions_sharewithgroups";
-    public const string NoLimits_Permission        = "houseregions_nolimits";
-    public const string HousingMaster_Permission   = "houseregions_housingmaster";
-    public const string Cfg_Permission             = "houseregions_cfg";
+    public const string Define_Permission          = "houseregions.define";
+    public const string Delete_Permission          = "houseregions.delete";
+    public const string Share_Permission           = "houseregions.share";
+    public const string ShareWithGroups_Permission = "houseregions.sharewithgroups";
+    public const string NoLimits_Permission        = "houseregions.nolimits";
+    public const string HousingMaster_Permission   = "houseregions.housingmaster";
+    public const string Cfg_Permission             = "houseregions.cfg";
 
     public static HouseRegionsPlugin LatestInstance { get; private set; }
 
@@ -62,13 +62,13 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
 
     #region [Initialization]
     public override void Initialize() {
-      GameHooks.PostInitialize += this.Game_PostInitialize;
+      ServerApi.Hooks.GamePostInitialize.Register(this, this.Game_PostInitialize);
 
       this.AddHooks();
     }
 
-    private void Game_PostInitialize() {
-      GameHooks.PostInitialize -= this.Game_PostInitialize;
+    private void Game_PostInitialize(EventArgs e) {
+      ServerApi.Hooks.GamePostInitialize.Deregister(this, this.Game_PostInitialize);
 
       if (!Directory.Exists(HouseRegionsPlugin.DataDirectory))
         Directory.CreateDirectory(HouseRegionsPlugin.DataDirectory);
@@ -122,7 +122,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
       if (this.GetDataHookHandler != null)
         throw new InvalidOperationException("Hooks already registered.");
       
-      this.GetDataHookHandler = new GetDataHookHandler(this.Trace, true);
+      this.GetDataHookHandler = new GetDataHookHandler(this, true);
       this.GetDataHookHandler.TileEdit += this.Net_TileEdit;
     }
 
@@ -130,7 +130,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
       if (this.GetDataHookHandler != null) 
         this.GetDataHookHandler.Dispose();
 
-      GameHooks.PostInitialize -= this.Game_PostInitialize;
+      ServerApi.Hooks.GamePostInitialize.Deregister(this, this.Game_PostInitialize);
     }
 
     private void Net_TileEdit(object sender, TileEditEventArgs e) {
