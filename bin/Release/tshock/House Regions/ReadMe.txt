@@ -25,8 +25,7 @@ Warning: TShock regions defined through this plugin are named in the format
 "*H_<User>:<HouseIndex>" thus, if you manually define a TShock region with this 
 name format, this plugin will treat the region like a house.
 
-Note: This plugin requires Terraria Server API 1.12 and a TShock 4.1 build in 
-order to work.
+Note: This plugin requires Terraria Server API 1.14 and TShock 4.2.
 
 Suggestions? Bugs? File issues here:
 https://github.com/CoderCow/HouseRegions-Plugin/issues
@@ -45,6 +44,7 @@ Commands
 /House ShareGroup <group>
 /House UnshareGroup <group>
 /House Delete
+/House Scan
 /House ReloadConfig
 
 To get more information about a command type 
