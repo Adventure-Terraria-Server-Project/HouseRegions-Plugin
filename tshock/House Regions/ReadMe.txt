@@ -73,6 +73,12 @@ houseregions.cfg
 
 Changelog
 ---------------------------------------------------------------------------------
+Version 1.1.1 [02/13/2014]
+  -Fixed a bug causing unhandled exceptions when a house with a size of 0, 0 was 
+   tried to be defined.
+  -Increased range of /house scan by 200% and time by 100%.
+  -Updated to Plugin Common Lib 2.6.
+
 Version 1.1.0 [10/03/2013]
   -Updated for Terraria 1.2 and TShock 4.2 pre.
   -Changed the permission model to "houseregions.<perm>" ("_" to ".").

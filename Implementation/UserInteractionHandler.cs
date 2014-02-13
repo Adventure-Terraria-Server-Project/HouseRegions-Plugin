@@ -439,7 +439,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
       Point playerLocation = new Point(args.Player.TileX, args.Player.TileY);
       List<Rectangle> houseAreasToDisplay = new List<Rectangle>(
         from r in TShock.Regions.Regions
-        where Math.Sqrt(Math.Pow(playerLocation.X - r.Area.Center.X, 2) + Math.Pow(playerLocation.Y - r.Area.Center.Y, 2)) <= 50
+        where Math.Sqrt(Math.Pow(playerLocation.X - r.Area.Center.X, 2) + Math.Pow(playerLocation.Y - r.Area.Center.Y, 2)) <= 200
         select r.Area
       );
       if (houseAreasToDisplay.Count == 0) {
@@ -461,7 +461,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
           hideTimer.Dispose();
           // ReSharper restore AccessToModifiedClosure
         },
-        null, 5000, Timeout.Infinite
+        null, 10000, Timeout.Infinite
       );
     }
 
@@ -607,7 +607,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
             tileLocation.Y >= houseArea.Top && tileLocation.Y <= houseArea.Bottom
           ) {
             try {
-              if (houseArea.Width == 0 || houseArea.Height == 0) {
+              if (houseArea.Width <= 0 || houseArea.Height <= 0) {
                 playerLocal.SendErrorMessage("The house has to be at least one block high and wide.");
               } else {
                 this.HousingManager.CreateHouseRegion(playerLocal, houseArea, true, true);
