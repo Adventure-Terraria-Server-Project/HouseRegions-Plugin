@@ -20,7 +20,7 @@
     <Width>8</Width>
     <Height>4</Height>
   </MinHouseSize>
-
+  
   <MaxHouseSize>
     <TotalTiles>7500</TotalTiles>
     <Width>150</Width>
