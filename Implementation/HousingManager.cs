@@ -165,6 +165,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
       )
         return false;
 
+      problematicConfig = this.Config.MaxSize;
       if (
         regionArea.Width > this.Config.MaxSize.Width || regionArea.Height > this.Config.MaxSize.Height ||
         areaTotalTiles > this.Config.MaxSize.TotalTiles

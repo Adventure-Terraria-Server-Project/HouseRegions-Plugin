@@ -74,6 +74,8 @@ houseregions.cfg
 Changelog
 ---------------------------------------------------------------------------------
 Version 1.1.1 [02/13/2014]
+  -Fixed a bug causing the maximum house size not being checked properly and
+   invalid error messages to be shown.
   -Fixed a bug causing unhandled exceptions when a house with a size of 0, 0 was 
    tried to be defined.
   -Increased range of /house scan by 200% and time by 100%.
