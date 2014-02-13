@@ -515,7 +515,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
       CommandInteraction interaction = this.StartOrResetCommandInteraction(args.Player, 60000);
       interaction.TileEditCallback += (playerLocal, editType, tileId, tileLocation, objectStyle) => {
         // Revoke Mark 1 or 2
-        if (editType == TileEditType.DestroyWire) {
+        if (editType == TileEditType.DestroyWire || editType == TileEditType.DestroyWireBlue || editType == TileEditType.DestroyWireGreen) {
           if (tileLocation == point1) {
             point1 = DPoint.Empty;
 
@@ -587,7 +587,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
             }
           }
 
-          if (editType == TileEditType.PlaceWire)
+          if (editType == TileEditType.PlaceWire || editType == TileEditType.PlaceWireBlue || editType == TileEditType.PlaceWireGreen)
             TerrariaUtils.Items.CreateNew(playerLocal, playerLocal.ToLocation(), new ItemData(ItemType.Wire));
           interaction.ResetTimer();
 
@@ -599,7 +599,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
           this.SendAreaDottedFakeWires(playerLocal, houseArea, false);
           playerLocal.SendTileSquare(tileLocation);
 
-          if (editType == TileEditType.PlaceWire)
+          if (editType == TileEditType.PlaceWire || editType == TileEditType.PlaceWireBlue || editType == TileEditType.PlaceWireGreen)
             TerrariaUtils.Items.CreateNew(playerLocal, playerLocal.ToLocation(), new ItemData(ItemType.Wire));
 
           if (

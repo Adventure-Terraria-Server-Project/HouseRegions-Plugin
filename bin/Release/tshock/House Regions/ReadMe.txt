@@ -73,6 +73,9 @@ houseregions.cfg
 
 Changelog
 ---------------------------------------------------------------------------------
+Version 1.1.2 [02/13/2014]
+  -Defining a house now works with blue and green wrenches too.
+
 Version 1.1.1 [02/13/2014]
   -Fixed a bug causing the maximum house size not being checked properly and
    invalid error messages to be shown.
