@@ -1120,7 +1120,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
     }
 
     private void SendAreaDottedFakeWires(TSPlayer player, Rectangle area, bool setOrUnset = true) {
-      foreach (Point boundaryPoint in Utils.Instance.EnumerateRegionBoundaries(area))
+      foreach (Point boundaryPoint in TShock.Utils.EnumerateRegionBoundaries(area))
         if ((boundaryPoint.X + boundaryPoint.Y & 1) == 0)
           if (setOrUnset)
             this.SendFakeTileWire(player, new DPoint(boundaryPoint.X, boundaryPoint.Y));
