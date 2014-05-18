@@ -73,6 +73,10 @@ houseregions.cfg
 
 Changelog
 ---------------------------------------------------------------------------------
+Version 1.1.4 [05/18/2014]
+  -Updated to Terraria 1.2.4.1
+  -Removed old Plugin Common Lib 2.6
+
 Version 1.1.3 [02/14/2014]
   -Updated to Terraria 1.2.3.
   -Updated to Plugin Common Lib 2.7.
