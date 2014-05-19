@@ -1,6 +1,6 @@
 ﻿=================================================================================
  Housing Regions for TerrariaServer-API and TShock
-   (c) CoderCow 2013
+   (c) CoderCow 2013-2014
 =================================================================================
  
 A TShock Region Wrapper for Housing Purposes
@@ -73,6 +73,14 @@ houseregions.cfg
 
 Changelog
 ---------------------------------------------------------------------------------
+Version 1.1.4 [05/18/2014]
+  -Updated to Terraria 1.2.4.1
+  -Updated to Plugin Common Lib 2.9
+
+Version 1.1.3 [02/14/2014]
+  -Updated to Terraria 1.2.3.
+  -Updated to Plugin Common Lib 2.7.
+
 Version 1.1.2 [02/13/2014]
   -Defining a house now works with blue and green wrenches too.
 
