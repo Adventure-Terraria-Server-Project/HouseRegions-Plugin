@@ -701,25 +701,34 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
       }
 
       Rectangle newArea = region.Area;
+      List<int> directions = new List<int>();
+      //0 = up
+      //1 = right
+      //2 = down
+      //3 = left
       for (int i = 1; i < args.Parameters.Count - 1; i++) {
         switch (args.Parameters[i].ToLowerInvariant()) {
           case "up":
           case "u":
             newArea.Y -= amount;
             newArea.Height += amount;
+            directions.Add(0);
             break;
           case "down":
           case "d":
             newArea.Height += amount;
+            directions.Add(2);
             break;
           case "left":
           case "l":
             newArea.X -= amount;
             newArea.Width += amount;
+            directions.Add(3);
             break;
           case "right":
           case "r":
             newArea.Width += amount;
+            directions.Add(1);
             break;
         }
       }
@@ -748,10 +757,14 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
 
       Rectangle oldArea = region.Area;
       region.Area = newArea;
-      if (!TShock.Regions.resizeRegion(region.Name, 0, 0)) {
-        args.Player.SendErrorMessage("Internal error has occured.");
-        region.Area = oldArea;
-        return;
+      foreach (int direction in directions)
+      {
+          if (!TShock.Regions.resizeRegion(region.Name, amount, direction))
+          {
+              args.Player.SendErrorMessage("Internal error has occured.");
+              region.Area = oldArea;
+              return;
+          }
       }
 
       args.Player.SendSuccessMessage("House was successfully resized.");
