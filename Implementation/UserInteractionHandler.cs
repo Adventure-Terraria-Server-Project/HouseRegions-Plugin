@@ -23,8 +23,8 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
       public CommandExecDummyPlayer(
         TSPlayer originalPlayer, Action<string,Color> sendMessageHandler
       ): base(originalPlayer.Name) {
-        this.UserID = originalPlayer.UserID;
-        this.UserAccountName = originalPlayer.UserAccountName;
+        this.User.ID = originalPlayer.User.ID;
+        this.User.Name = originalPlayer.User.Name;
         this.IsLoggedIn = originalPlayer.IsLoggedIn;
         this.Group = originalPlayer.Group;
 
@@ -90,7 +90,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
         int houseIndex;
         if (
           this.HousingManager.TryGetHouseRegionData(TShock.Regions.Regions[i].Name, out houseOwner, out houseIndex) &&
-          houseOwner == args.Player.UserAccountName
+          houseOwner == args.Player.User.Name
         )
           playerHouseCount++;
       }
@@ -1090,7 +1090,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
       if (!this.TryGetHouseRegionAtPlayer(player, out owner, out region))
         return false;
 
-      if (player.UserAccountName != owner && !player.Group.HasPermission(HouseRegionsPlugin.HousingMaster_Permission)) {
+      if (player.User.Name!= owner && !player.Group.HasPermission(HouseRegionsPlugin.HousingMaster_Permission)) {
         player.SendErrorMessage("You're not the owner of this house.");
         return false;
       }

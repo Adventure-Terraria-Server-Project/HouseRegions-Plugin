@@ -54,14 +54,14 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
         }
       }
 
-      if (checkOverlaps && this.CheckHouseRegionOverlap(player.UserAccountName, area))
+      if (checkOverlaps && this.CheckHouseRegionOverlap(player.User.Name, area))
         throw new HouseOverlapException();
 
       // Find a free house index.
       int houseIndex;
       string houseName = null;
       for (houseIndex = 1; houseIndex <= maxHouses; houseIndex++) {
-        houseName = this.ToHouseRegionName(player.UserAccountName, houseIndex);
+        houseName = this.ToHouseRegionName(player.User.Name, houseIndex);
         if (TShock.Regions.GetRegionByName(houseName) == null)
           break;
       }
@@ -69,7 +69,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
         throw new LimitEnforcementException("Max amount of houses reached.");
 
       if (!TShock.Regions.AddRegion(
-        area.X, area.Y, area.Width, area.Height, houseName, player.UserAccountName, Main.worldID.ToString(), 
+        area.X, area.Y, area.Width, area.Height, houseName, player.User.Name, Main.worldID.ToString(), 
         this.Config.DefaultZIndex
       ))
         throw new InvalidOperationException();
