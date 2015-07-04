@@ -570,8 +570,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
             this.SendAreaDottedFakeWires(playerLocal, houseArea);
 
             args.Player.SendMessage("Final Mark", Color.IndianRed);
-            args.Player.SendMessage("Mark any point inside your house using wrench or change it otherwise to accept, or", Color.MediumSpringGreen);
-            args.Player.SendMessage("mark a point outside the house to cancel.", Color.MediumSpringGreen);
+            args.Player.SendMessage("Mark any point inside your house to accept, or any point outside the house to cancel.", Color.MediumSpringGreen);
             args.Player.SendMessage(string.Empty, Color.MediumSpringGreen);
           } else {
             if (point2 == DPoint.Empty) {

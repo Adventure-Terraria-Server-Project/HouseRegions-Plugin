@@ -1,6 +1,6 @@
 ﻿=================================================================================
  Housing Regions for TerrariaServer-API and TShock
-   (c) CoderCow 2013-2014
+   (c) CoderCow 2013-2015
 =================================================================================
  
 A TShock Region Wrapper for Housing Purposes
@@ -25,7 +25,7 @@ Warning: TShock regions defined through this plugin are named in the format
 "*H_<User>:<HouseIndex>" thus, if you manually define a TShock region with this 
 name format, this plugin will treat the region like a house.
 
-Note: This plugin requires Terraria Server API 1.14 and TShock 4.2.
+Note: This plugin requires Terraria Server API 1.18 and TShock 4.3.
 
 Suggestions? Bugs? File issues here:
 https://github.com/CoderCow/HouseRegions-Plugin/issues

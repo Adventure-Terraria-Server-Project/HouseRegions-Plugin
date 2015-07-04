@@ -22,7 +22,7 @@ Warning: TShock regions defined through this plugin are named in the format
 "*H_<User>:<HouseIndex>" thus, if you manually define a TShock region with this 
 name format, this plugin will treat the region like a house.
 
-Note: This plugin requires Terraria Server API 1.12 and a TShock 4.1 build in 
+Note: This plugin requires Terraria Server API 1.18 and a TShock 4.3 build in 
 order to work.
 
 More information to this plugin can be found [here](tshock/House Regions/ReadMe.txt).
