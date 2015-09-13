@@ -758,7 +758,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
       region.Area = newArea;
       foreach (int direction in directions)
       {
-          if (!TShock.Regions.resizeRegion(region.Name, amount, direction))
+          if (!TShock.Regions.ResizeRegion(region.Name, amount, direction))
           {
               args.Player.SendErrorMessage("Internal error has occured.");
               region.Area = oldArea;
