@@ -32,8 +32,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
       }
 
       public override void SendMessage(string msg, Color color) {
-        if (this.sendMessageHandler != null)
-          this.sendMessageHandler(msg, color);
+        this.sendMessageHandler?.Invoke(msg, color);
       }
     }
     #endregion
@@ -515,7 +514,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
       CommandInteraction interaction = this.StartOrResetCommandInteraction(args.Player, 60000);
       interaction.TileEditCallback += (playerLocal, editType, tileId, tileLocation, objectStyle) => {
         // Revoke Mark 1 or 2
-        if (editType == TileEditType.DestroyWire || editType == TileEditType.DestroyWireBlue || editType == TileEditType.DestroyWireGreen) {
+        if (editType == TileEditType.DestroyWire || editType == TileEditType.DestroyWireBlue || editType == TileEditType.DestroyWireGreen || editType == TileEditType.DestroyWireYellow) {
           if (tileLocation == point1) {
             point1 = DPoint.Empty;
 
@@ -586,7 +585,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
             }
           }
 
-          if (editType == TileEditType.PlaceWire || editType == TileEditType.PlaceWireBlue || editType == TileEditType.PlaceWireGreen)
+          if (editType == TileEditType.PlaceWire || editType == TileEditType.PlaceWireBlue || editType == TileEditType.PlaceWireGreen || editType == TileEditType.PlaceWireYellow)
             TerrariaUtils.Items.CreateNew(playerLocal, playerLocal.ToLocation(), new ItemData(ItemType.Wire));
           interaction.ResetTimer();
 
@@ -598,7 +597,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
           this.SendAreaDottedFakeWires(playerLocal, houseArea, false);
           playerLocal.SendTileSquare(tileLocation);
 
-          if (editType == TileEditType.PlaceWire || editType == TileEditType.PlaceWireBlue || editType == TileEditType.PlaceWireGreen)
+          if (editType == TileEditType.PlaceWire || editType == TileEditType.PlaceWireBlue || editType == TileEditType.PlaceWireGreen || editType == TileEditType.PlaceWireYellow)
             TerrariaUtils.Items.CreateNew(playerLocal, playerLocal.ToLocation(), new ItemData(ItemType.Wire));
 
           if (
