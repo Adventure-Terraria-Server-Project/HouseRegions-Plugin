@@ -34,17 +34,24 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
       this.config = config;
     }
 
-    public void CreateHouseRegion(TSPlayer player, Rectangle area, bool checkOverlaps = true, bool checkPermissions = false) {
+    public void CreateHouseRegion(TSPlayer player, Rectangle area, bool checkOverlaps = true, bool checkPermissions = false, bool checkDefinePermission = false) {
       Contract.Requires<ArgumentNullException>(player != null);
       Contract.Requires<PlayerNotLoggedInException>(player.IsLoggedIn);
+
+      this.CreateHouseRegion(player.User, player.Group, area, checkOverlaps, checkPermissions, checkDefinePermission);
+    }
+
+    public void CreateHouseRegion(User user, Group group, Rectangle area, bool checkOverlaps = true, bool checkPermissions = false, bool checkDefinePermission = false) {
+      Contract.Requires<ArgumentNullException>(user != null);
+      Contract.Requires<ArgumentNullException>(group != null);
       Contract.Requires<ArgumentException>(area.Width > 0 && area.Height > 0);
 
       int maxHouses = int.MaxValue;
       if (checkPermissions) {
-        if (!player.Group.HasPermission(HouseRegionsPlugin.Define_Permission))
+        if (!group.HasPermission(HouseRegionsPlugin.Define_Permission))
           throw new MissingPermissionException(HouseRegionsPlugin.Define_Permission);
         
-        if (!player.Group.HasPermission(HouseRegionsPlugin.NoLimits_Permission)) {
+        if (!group.HasPermission(HouseRegionsPlugin.NoLimits_Permission)) {
           if (this.Config.MaxHousesPerUser > 0)
             maxHouses = this.Config.MaxHousesPerUser;
 
@@ -54,14 +61,14 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
         }
       }
 
-      if (checkOverlaps && this.CheckHouseRegionOverlap(player.User.Name, area))
+      if (checkOverlaps && this.CheckHouseRegionOverlap(user.Name, area))
         throw new HouseOverlapException();
 
       // Find a free house index.
       int houseIndex;
       string houseName = null;
       for (houseIndex = 1; houseIndex <= maxHouses; houseIndex++) {
-        houseName = this.ToHouseRegionName(player.User.Name, houseIndex);
+        houseName = this.ToHouseRegionName(user.Name, houseIndex);
         if (TShock.Regions.GetRegionByName(houseName) == null)
           break;
       }
@@ -69,7 +76,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
         throw new LimitEnforcementException("Max amount of houses reached.");
 
       if (!TShock.Regions.AddRegion(
-        area.X, area.Y, area.Width, area.Height, houseName, player.User.Name, Main.worldID.ToString(), 
+        area.X, area.Y, area.Width, area.Height, houseName, user.Name, Main.worldID.ToString(), 
         this.Config.DefaultZIndex
       ))
         throw new InvalidOperationException();
@@ -121,6 +128,24 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
 
       owner = regionName.Substring(HousingManager.HouseRegionNameAppendix.Length, separatorIndex - HousingManager.HouseRegionNameAppendix.Length);
       return true;
+    }
+
+    public void SetHouseRegionOwner(Region region, string newOwnerName) {
+      Contract.Requires<ArgumentNullException>(region != null);
+      Contract.Requires<ArgumentNullException>(newOwnerName != null);
+
+      string currentOwner;
+      int index;
+      if (!this.TryGetHouseRegionData(region.Name, out currentOwner, out index))
+        throw new ArgumentException("The given region is not a house region.");
+
+      if (currentOwner == newOwnerName)
+        return;
+
+      string newRegionName = this.ToHouseRegionName(newOwnerName, index);
+      TShock.DB.Query("UPDATE Regions SET RegionName=@0,Owner=@1 WHERE RegionName=@2 AND WorldID=@3", newRegionName, newOwnerName, region.Name, Main.worldID.ToString());
+      region.Name = newRegionName;
+      region.Owner = newOwnerName;
     }
 
     public bool IsHouseRegion(string regionName) {

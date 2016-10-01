@@ -122,6 +122,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
           if (args.Player.Group.HasPermission(HouseRegionsPlugin.Delete_Permission))
             terms.Add("/house delete");
           if (args.Player.Group.HasPermission(HouseRegionsPlugin.Share_Permission)) {
+            terms.Add("/house setowner");
             terms.Add("/house share");
             terms.Add("/house unshare");
           }
@@ -174,6 +175,14 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
           }
 
           this.HouseDeleteCommand_Exec(args);
+          return true;
+        case "setowner":
+          if (!args.Player.Group.HasPermission(HouseRegionsPlugin.Share_Permission)) {
+            args.Player.SendErrorMessage("You do not have the necessary permission to do that.");
+            return true;
+          }
+
+          this.HouseSetOwnerCommand_Exec(args);
           return true;
         case "shareuser":
         case "share":
@@ -844,6 +853,81 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
           args.Player.SendMessage("Deletes the house region where your character currently stands in.", Color.LightGray);
           args.Player.SendMessage(string.Empty, Color.IndianRed);
           args.Player.SendMessage("NOTE: You have to own a house in order to remove it, just having", Color.IndianRed);
+          args.Player.SendMessage("build access is not sufficient.", Color.IndianRed);
+          return;
+      }
+    }
+    #endregion
+
+    #region [Command Handling /house setowner]
+    private void HouseSetOwnerCommand_Exec(CommandArgs args) {
+      if (args == null || this.IsDisposed)
+        return;
+
+      if (args.Parameters.Count < 2) {
+        args.Player.SendErrorMessage("Proper syntax: /house setowner <user name>");
+        args.Player.SendInfoMessage("Type /house setowner help to get more information about this command.");
+        return;
+      }
+
+      string newOwnerRaw = args.ParamsToSingleString(1);
+      if (newOwnerRaw.Equals("help", StringComparison.InvariantCultureIgnoreCase)) {
+        this.HouseSetOwnerCommand_HelpCallback(args);
+        return;
+      }
+
+      User tsUser;
+      if (!TShockEx.MatchUserByPlayerName(newOwnerRaw, out tsUser, args.Player))
+        return;
+
+      Region region;
+      if (!this.TryGetAccessibleHouseRegionAtPlayer(args.Player, out region))
+        return;
+
+      if (args.Player.Name == region.Owner) {
+        args.Player.SendErrorMessage($"{tsUser.Name} is already the owner of this region.");
+        return;
+      }
+        
+      Group tsGroup = TShock.Groups.GetGroupByName(tsUser.Group);
+      if (tsGroup == null) {
+        args.Player.SendErrorMessage("The new owner's TShock group could not be determined.");
+        return;
+      }
+
+      try {
+        this.HousingManager.CreateHouseRegion(tsUser, tsGroup, region.Area, false, true, false);
+      } catch (LimitEnforcementException) {
+        args.Player.SendErrorMessage("The new owner of the house would exceed their house limit.");
+        return;
+      } catch (Exception ex) {
+        args.Player.SendErrorMessage("Internal error has occured: " + ex.Message);
+        return;
+      }
+      
+      if (!TShock.Regions.DeleteRegion(region.Name)) {
+        args.Player.SendErrorMessage("Internal error has occured when deleting the old house region.");
+        return;
+      }
+
+      args.Player.SendSuccessMessage($"The owner of this house has been set to \"{tsUser.Name}\" and all shared users and groups were deleted from it.");
+    }
+
+    private void HouseSetOwnerCommand_HelpCallback(CommandArgs args) {
+      if (args == null || this.IsDisposed)
+        return;
+
+      int pageNumber;
+      if (!PaginationUtil.TryParsePageNumber(args.Parameters, 2, args.Player, out pageNumber))
+        return;
+
+      switch (pageNumber) {
+        default:
+          args.Player.SendMessage("Command reference for /house setowner (Page 1 of 1)", Color.Lime);
+          args.Player.SendMessage("/house setowner <user name>", Color.White);
+          args.Player.SendMessage("Changes the owning user of the house at you character.", Color.LightGray);
+          args.Player.SendMessage(string.Empty, Color.IndianRed);
+          args.Player.SendMessage("NOTE: You have to own a house in order to change its owner, just having", Color.IndianRed);
           args.Player.SendMessage("build access is not sufficient.", Color.IndianRed);
           return;
       }
