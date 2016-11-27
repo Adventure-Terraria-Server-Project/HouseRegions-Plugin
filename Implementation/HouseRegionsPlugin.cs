@@ -11,7 +11,7 @@ using TerrariaApi.Server;
 using TShockAPI;
 
 namespace Terraria.Plugins.CoderCow.HouseRegions {
-  [ApiVersion(1, 24)]
+  [ApiVersion(1, 26)]
   public class HouseRegionsPlugin: TerrariaPlugin {
     private const string TracePrefix = @"[Housing] ";
     public const string Define_Permission          = "houseregions.define";
@@ -33,8 +33,8 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
     }
 
     private bool hooksEnabled;
-    internal PluginTrace Trace { get; private set; }
-    protected PluginInfo PluginInfo { get; private set; }
+    internal PluginTrace Trace { get; }
+    protected PluginInfo PluginInfo { get; }
     protected Configuration Config { get; private set; }
     protected GetDataHookHandler GetDataHookHandler { get; private set; }
     protected UserInteractionHandler UserInteractionHandler { get; private set; }
