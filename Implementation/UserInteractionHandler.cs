@@ -884,7 +884,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
       if (!this.TryGetAccessibleHouseRegionAtPlayer(args.Player, out region))
         return;
 
-      if (args.Player.Name == region.Owner) {
+      if (tsUser.Name == region.Owner) {
         args.Player.SendErrorMessage($"{tsUser.Name} is already the owner of this region.");
         return;
       }
