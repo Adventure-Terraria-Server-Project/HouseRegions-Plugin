@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
-
+using Microsoft.Xna.Framework;
 using Terraria.Plugins.Common;
 
 using TShockAPI;
