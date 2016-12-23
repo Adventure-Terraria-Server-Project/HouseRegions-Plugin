@@ -1,7 +1,7 @@
 HouseRegions-Plugin
 ===================
 
-####A TShock Region Wrapper for Housing Purposes
+###A TShock Region Wrapper for Housing Purposes
 
 This plugin provides players on TShock driven Terraria servers the possibility 
 of defining houses in which other players can not alter any tiles. It 
@@ -20,12 +20,46 @@ regular TShock regions can be configured.
 
 Warning: TShock regions defined through this plugin are named in the format 
 "*H_<User>:<HouseIndex>" thus, if you manually define a TShock region with this 
-name format, this plugin will treat the region like a house.
+name format, this plugin will treat the region just like a house.
 
-Note: This plugin requires Terraria Server API 1.18 and a TShock 4.3 build in 
-order to work.
+###How to Install
 
-More information to this plugin can be found [here](tshock/House Regions/ReadMe.txt).
+Note: This plugin requires [TerrariaAPI-Server](https://github.com/NyxStudios/TerrariaAPI-Server) and [TShock](https://github.com/NyxStudios/TShock) in order to work. You can't use this with a vanilla Terraria server.
 
-Suggestions? Bugs? File issues here:
-https://github.com/CoderCow/HouseRegions-Plugin/issues
+Grab the latest release from [bin/Release](https://github.com/CoderCow/HouseRegions-Plugin/tree/master/bin/Release) and put the _.dll_ files into your server's _ServerPlugins_ directory. Also put the contents of the _tshock/_ folder into your server's _tshock_ folder. You may change the configuration options to your needs by editing the _tshock/House Regions/Config.xml_ file.
+
+### Commands
+
+* `/house`
+* `/house commands`
+* `/house summary`
+* `/house info`
+* `/house define`
+* `/house resize <up|down|left|right> <amount>`
+* `/house share <user>`
+* `/house unshare <user>`
+* `/house shareGroup <group>`
+* `/house unshareGroup <group>`
+* `/house delete`
+* `/house scan`
+* `/house reloadconfig`
+
+To get more information about a command type `/<command> help` ingame.
+
+###Permissions
+
+* **houseregions.define**
+  Can define new or resize existing houses.
+* **houseregions.delete**
+  Can delete existing houses.
+* **houseregions.share**
+  Can share houses.
+* **houseregions.sharewithgroups**
+  Can share houses with TShock groups.
+* **houseregions.nolimits**
+  Can define houses without a maximum limit or size restrictions.
+* **houseregions.housingmaster**
+  Can display a list of all house owners. Can change settings of any house, either 
+  owned or not owned.
+* **houseregions.cfg**
+  Can reload the configuration file.
