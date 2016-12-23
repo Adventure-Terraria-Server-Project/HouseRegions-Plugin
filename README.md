@@ -1,4 +1,4 @@
-HouseRegions-Plugin
+House Regions Plugin
 ===================
 
 ###A TShock Region Wrapper for Housing Purposes
