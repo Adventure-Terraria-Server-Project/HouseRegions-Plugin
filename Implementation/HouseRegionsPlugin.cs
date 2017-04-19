@@ -11,7 +11,7 @@ using TerrariaApi.Server;
 using TShockAPI;
 
 namespace Terraria.Plugins.CoderCow.HouseRegions {
-  [ApiVersion(2, 0)]
+  [ApiVersion(2, 1)]
   public class HouseRegionsPlugin: TerrariaPlugin {
     private const string TracePrefix = @"[Housing] ";
     public const string Define_Permission          = "houseregions.define";
@@ -122,8 +122,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
     }
 
     private void RemoveHooks() {
-      if (this.GetDataHookHandler != null) 
-        this.GetDataHookHandler.Dispose();
+      this.GetDataHookHandler?.Dispose();
 
       ServerApi.Hooks.GamePostInitialize.Deregister(this, this.Game_PostInitialize);
     }
@@ -137,39 +136,23 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
     #endregion
 
     #region [TerrariaPlugin Overrides]
-    public override string Name {
-      get { return this.PluginInfo.PluginName; }
-    }
-
-    public override Version Version {
-      get { return this.PluginInfo.VersionNumber; }
-    }
-
-    public override string Author {
-      get { return this.PluginInfo.Author; }
-    }
-
-    public override string Description {
-      get { return this.PluginInfo.Description; }
-    }
+    public override string Name => this.PluginInfo.PluginName;
+    public override Version Version => this.PluginInfo.VersionNumber;
+    public override string Author => this.PluginInfo.Author;
+    public override string Description => this.PluginInfo.Description;
     #endregion
 
     #region [IDisposable Implementation]
     private bool isDisposed;
-
-    public bool IsDisposed {
-      get { return this.isDisposed; } 
-    }
+    public bool IsDisposed => this.isDisposed;
 
     protected override void Dispose(bool isDisposing) {
       if (this.IsDisposed)
         return;
     
       if (isDisposing) {
-        if (this.GetDataHookHandler != null)
-          this.GetDataHookHandler.Dispose();
-        if (this.UserInteractionHandler != null)
-          this.UserInteractionHandler.Dispose();
+        this.GetDataHookHandler?.Dispose();
+        this.UserInteractionHandler?.Dispose();
 
         this.RemoveHooks();
       }
