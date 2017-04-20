@@ -118,6 +118,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
         throw new InvalidOperationException("Hooks already registered.");
       
       this.GetDataHookHandler = new GetDataHookHandler(this, true);
+      this.GetDataHookHandler.InvokeTileEditOnMasswireOperation = GetDataHookHandler.MassWireOpTileEditInvokeType.AlwaysPlaceWire;
       this.GetDataHookHandler.TileEdit += this.Net_TileEdit;
     }
 
