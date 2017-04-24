@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using Microsoft.Xna.Framework;
+using Terraria.ID;
 using DPoint = System.Drawing.Point;
 
 using Terraria.Plugins.Common;
@@ -134,8 +135,8 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
           if (args.Player.Group.HasPermission(HouseRegionsPlugin.Cfg_Permission))
             terms.Add("/house reloadconfig");
           
-          List<string> lines = PaginationUtil.BuildLinesFromTerms(terms);
-          PaginationUtil.SendPage(args.Player, pageNumber, lines, new PaginationUtil.Settings {
+          List<string> lines = PaginationTools.BuildLinesFromTerms(terms);
+          PaginationTools.SendPage(args.Player, pageNumber, lines, new PaginationTools.Settings {
             HeaderFormat = "House Commands (Page {0} of {1})",
             LineTextColor = Color.LightGray,
           });
@@ -261,7 +262,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
         return true;
 
       int pageNumber;
-      if (!PaginationUtil.TryParsePageNumber(args.Parameters, 1, null, out pageNumber))
+      if (!PaginationTools.TryParsePageNumber(args.Parameters, 1, null, out pageNumber))
         return false;
 
       switch (pageNumber) {
@@ -337,7 +338,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
         return;
 
       int pageNumber;
-      if (!PaginationUtil.TryParsePageNumber(args.Parameters, 2, args.Player, out pageNumber))
+      if (!PaginationTools.TryParsePageNumber(args.Parameters, 2, args.Player, out pageNumber))
         return;
 
       switch (pageNumber) {
@@ -415,7 +416,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
         return;
 
       int pageNumber;
-      if (!PaginationUtil.TryParsePageNumber(args.Parameters, 2, args.Player, out pageNumber))
+      if (!PaginationTools.TryParsePageNumber(args.Parameters, 2, args.Player, out pageNumber))
         return;
 
       switch (pageNumber) {
@@ -479,7 +480,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
         return;
 
       int pageNumber;
-      if (!PaginationUtil.TryParsePageNumber(args.Parameters, 2, args.Player, out pageNumber))
+      if (!PaginationTools.TryParsePageNumber(args.Parameters, 2, args.Player, out pageNumber))
         return;
 
       switch (pageNumber) {
@@ -595,8 +596,6 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
             }
           }
 
-          if (editType == TileEditType.PlaceWire || editType == TileEditType.PlaceWireBlue || editType == TileEditType.PlaceWireGreen || editType == TileEditType.PlaceWireYellow)
-            TerrariaUtils.Items.CreateNew(playerLocal, playerLocal.ToLocation(), new ItemData(ItemType.Wire));
           interaction.ResetTimer();
 
           return new CommandInteractionResult { IsHandled = true, IsInteractionCompleted = false };
@@ -606,9 +605,6 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
           playerLocal.SendTileSquare(point2);
           this.SendAreaDottedFakeWires(playerLocal, houseArea, false);
           playerLocal.SendTileSquare(tileLocation);
-
-          if (editType == TileEditType.PlaceWire || editType == TileEditType.PlaceWireBlue || editType == TileEditType.PlaceWireGreen || editType == TileEditType.PlaceWireYellow)
-            TerrariaUtils.Items.CreateNew(playerLocal, playerLocal.ToLocation(), new ItemData(ItemType.Wire));
 
           if (
             tileLocation.X >= houseArea.Left && tileLocation.X <= houseArea.Right && 
@@ -662,7 +658,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
         return;
 
       int pageNumber;
-      if (!PaginationUtil.TryParsePageNumber(args.Parameters, 2, args.Player, out pageNumber))
+      if (!PaginationTools.TryParsePageNumber(args.Parameters, 2, args.Player, out pageNumber))
         return;
 
       switch (pageNumber) {
@@ -785,7 +781,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
         return;
 
       int pageNumber;
-      if (!PaginationUtil.TryParsePageNumber(args.Parameters, 2, args.Player, out pageNumber))
+      if (!PaginationTools.TryParsePageNumber(args.Parameters, 2, args.Player, out pageNumber))
         return;
 
       switch (pageNumber) {
@@ -844,7 +840,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
         return;
 
       int pageNumber;
-      if (!PaginationUtil.TryParsePageNumber(args.Parameters, 2, args.Player, out pageNumber))
+      if (!PaginationTools.TryParsePageNumber(args.Parameters, 2, args.Player, out pageNumber))
         return;
 
       switch (pageNumber) {
@@ -919,7 +915,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
         return;
 
       int pageNumber;
-      if (!PaginationUtil.TryParsePageNumber(args.Parameters, 2, args.Player, out pageNumber))
+      if (!PaginationTools.TryParsePageNumber(args.Parameters, 2, args.Player, out pageNumber))
         return;
 
       switch (pageNumber) {
@@ -973,7 +969,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
         return;
 
       int pageNumber;
-      if (!PaginationUtil.TryParsePageNumber(args.Parameters, 2, args.Player, out pageNumber))
+      if (!PaginationTools.TryParsePageNumber(args.Parameters, 2, args.Player, out pageNumber))
         return;
 
       switch (pageNumber) {
@@ -1027,7 +1023,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
         return;
 
       int pageNumber;
-      if (!PaginationUtil.TryParsePageNumber(args.Parameters, 2, args.Player, out pageNumber))
+      if (!PaginationTools.TryParsePageNumber(args.Parameters, 2, args.Player, out pageNumber))
         return;
 
       switch (pageNumber) {
@@ -1083,7 +1079,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
         return;
 
       int pageNumber;
-      if (!PaginationUtil.TryParsePageNumber(args.Parameters, 2, args.Player, out pageNumber))
+      if (!PaginationTools.TryParsePageNumber(args.Parameters, 2, args.Player, out pageNumber))
         return;
 
       switch (pageNumber) {
@@ -1139,7 +1135,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
         return;
 
       int pageNumber;
-      if (!PaginationUtil.TryParsePageNumber(args.Parameters, 2, args.Player, out pageNumber))
+      if (!PaginationTools.TryParsePageNumber(args.Parameters, 2, args.Player, out pageNumber))
         return;
 
       switch (pageNumber) {
