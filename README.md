@@ -1,7 +1,7 @@
 House Regions Plugin
 ===================
 
-###A TShock Region Wrapper for Housing Purposes
+### A TShock Region Wrapper for Housing Purposes
 
 This plugin provides players on TShock driven Terraria servers the possibility 
 of defining houses in which other players can not alter any tiles. It 
@@ -46,7 +46,7 @@ Grab the latest release from [bin/Release](https://github.com/CoderCow/HouseRegi
 
 To get more information about a command type `/<command> help` ingame.
 
-###Permissions
+### Permissions
 
 * **houseregions.define**
   Can define new or resize existing houses.
@@ -63,3 +63,7 @@ To get more information about a command type `/<command> help` ingame.
   owned or not owned.
 * **houseregions.cfg**
   Can reload the configuration file.
+
+### Credits
+
+Icon made by [freepik](http://www.freepik.com/)
