@@ -22,7 +22,9 @@ Warning: TShock regions defined through this plugin are named in the format
 "*H_<User>:<HouseIndex>" thus, if you manually define a TShock region with this 
 name format, this plugin will treat the region just like a house.
 
-###How to Install
+Releases of this plugin use [Semantic Versioning](http://semver.org/).
+
+### How to Install
 
 Note: This plugin requires [TerrariaAPI-Server](https://github.com/NyxStudios/TerrariaAPI-Server) and [TShock](https://github.com/NyxStudios/TShock) in order to work. You can't use this with a vanilla Terraria server.
 

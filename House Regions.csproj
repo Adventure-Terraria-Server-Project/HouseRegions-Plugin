@@ -138,6 +138,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <None Include="publish.ps1" />
     <None Include="README.md" />
     <None Include="CONTRIBUTING.md" />
     <None Include="tshock\House Regions\Config.xsd">
