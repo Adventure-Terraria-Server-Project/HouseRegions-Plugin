@@ -139,6 +139,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
+    <None Include="CONTRIBUTING.md" />
     <None Include="tshock\House Regions\Config.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
