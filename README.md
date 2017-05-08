@@ -19,16 +19,22 @@ user, several size restrictions, and whether house regions can overlap with
 regular TShock regions can be configured.
 
 Warning: TShock regions defined through this plugin are named in the format 
-"*H_<User>:<HouseIndex>" thus, if you manually define a TShock region with this 
+"*H_User:HouseIndex" thus, if you manually define a TShock region with this 
 name format, this plugin will treat the region just like a house.
 
 Releases of this plugin use [Semantic Versioning](http://semver.org/).
 
 ### How to Install
 
-Note: This plugin requires [TerrariaAPI-Server](https://github.com/NyxStudios/TerrariaAPI-Server) and [TShock](https://github.com/NyxStudios/TShock) in order to work. You can't use this with a vanilla Terraria server.
+Note: This plugin requires 
+[TerrariaAPI-Server](https://github.com/NyxStudios/TerrariaAPI-Server) and 
+[TShock](https://github.com/NyxStudios/TShock) in order to work. You can't use 
+this with a vanilla Terraria server.
 
-Grab the latest release and put the _.dll_ files into your server's _ServerPlugins_ directory. Also put the contents of the _tshock/_ folder into your server's _tshock_ folder. You may change the configuration options to your needs by editing the _tshock/House Regions/Config.xml_ file.
+Grab the latest release and put the _.dll_ files into your server's 
+_ServerPlugins_ directory. Also put the contents of the _tshock/_ folder into 
+your server's _tshock_ folder. You may change the configuration options to 
+your needs by editing the _tshock/House Regions/Config.xml_ file.
 
 ### Commands
 
