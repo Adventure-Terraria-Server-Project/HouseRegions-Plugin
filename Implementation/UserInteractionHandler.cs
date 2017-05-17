@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using Microsoft.Xna.Framework;
+using OTAPI.Tile;
 using Terraria.ID;
 using DPoint = System.Drawing.Point;
 
@@ -1183,7 +1184,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
     }
 
     private void SendFakeTileWire(TSPlayer player, DPoint tileLocation) {
-      Tile tile = TerrariaUtils.Tiles[tileLocation];
+      ITile tile = TerrariaUtils.Tiles[tileLocation];
       if (tile.wire2())
         return;
 
