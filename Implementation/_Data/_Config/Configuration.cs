@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.Contracts;
 using System.IO;
 using System.Xml;
 using System.Xml.Schema;
@@ -16,7 +15,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
 
 
       public static HouseSizeConfig FromXmlElement(XmlElement rootElement) {
-        Contract.Requires<ArgumentNullException>(rootElement != null);
+        if (rootElement == null) throw new ArgumentNullException();
 
         int totalTiles = int.Parse(rootElement["TotalTiles"].InnerText);
         int width = int.Parse(rootElement["Width"].InnerText);

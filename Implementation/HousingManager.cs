@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Terraria.Plugins.Common;
@@ -20,31 +19,32 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
     public Configuration Config {
       get { return this.config; }
       set {
-        Contract.Requires<ArgumentNullException>(value != null);
+        if (value == null) throw new ArgumentNullException();
         this.config = value;
       }
     }
 
 
     public HousingManager(PluginTrace trace, Configuration config) {
-      Contract.Requires<ArgumentNullException>(trace != null);
-      Contract.Requires<ArgumentNullException>(config != null);
+      if (trace == null) throw new ArgumentNullException();
+      if (config == null) throw new ArgumentNullException();
 
       this.Trace = trace;
       this.config = config;
     }
 
     public void CreateHouseRegion(TSPlayer player, Rectangle area, bool checkOverlaps = true, bool checkPermissions = false, bool checkDefinePermission = false) {
-      Contract.Requires<ArgumentNullException>(player != null);
-      Contract.Requires<PlayerNotLoggedInException>(player.IsLoggedIn);
+      if (player == null) throw new ArgumentNullException();
+      if (!player.IsLoggedIn) throw new PlayerNotLoggedInException();
 
       this.CreateHouseRegion(player.Account, player.Group, area, checkOverlaps, checkPermissions, checkDefinePermission);
     }
 
+
     public void CreateHouseRegion(UserAccount user, Group group, Rectangle area, bool checkOverlaps = true, bool checkPermissions = false, bool checkDefinePermission = false) {
-      Contract.Requires<ArgumentNullException>(user != null);
-      Contract.Requires<ArgumentNullException>(group != null);
-      Contract.Requires<ArgumentException>(area.Width > 0 && area.Height > 0);
+      if (user == null) throw new ArgumentNullException();
+      if (group == null) throw new ArgumentNullException();
+      if (!(area.Width > 0 && area.Height > 0)) throw new ArgumentException();
 
       int maxHouses = int.MaxValue;
       if (checkPermissions) {
@@ -79,12 +79,12 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
         area.X, area.Y, area.Width, area.Height, houseName, user.Name, Main.worldID.ToString(), 
         this.Config.DefaultZIndex
       ))
-        throw new InvalidOperationException();
+        throw new InvalidOperationException("House region might already exist.");
     }
 
     public string ToHouseRegionName(string owner, int houseIndex) {
-      Contract.Requires<ArgumentException>(!string.IsNullOrWhiteSpace(owner));
-      Contract.Requires<ArgumentOutOfRangeException>(houseIndex > 0);
+      if (string.IsNullOrWhiteSpace(owner)) throw new ArgumentException();
+      if (!(houseIndex > 0)) throw new ArgumentOutOfRangeException();
 
       return string.Concat(
         HousingManager.HouseRegionNameAppendix, owner, HousingManager.HouseRegionNameNumberSeparator, houseIndex
@@ -92,7 +92,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
     }
 
     public bool TryGetHouseRegionAtPlayer(TSPlayer player, out string owner, out int houseIndex, out Region region) {
-      Contract.Requires<ArgumentNullException>(player != null);
+      if (player == null) throw new ArgumentNullException();
 
       for (int i = 0; i < TShock.Regions.Regions.Count; i++) {
         region = TShock.Regions.Regions[i];
@@ -106,8 +106,9 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
       return false;
     }
 
+
     public bool TryGetHouseRegionData(string regionName, out string owner, out int houseIndex) {
-      Contract.Requires<ArgumentNullException>(regionName != null);
+      if (regionName == null) throw new ArgumentNullException();
 
       owner = null;
       houseIndex = -1;
@@ -131,8 +132,8 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
     }
 
     public void SetHouseRegionOwner(Region region, string newOwnerName) {
-      Contract.Requires<ArgumentNullException>(region != null);
-      Contract.Requires<ArgumentNullException>(newOwnerName != null);
+      if (region == null) throw new ArgumentNullException();
+      if (newOwnerName == null) throw new ArgumentNullException();
 
       string currentOwner;
       int index;

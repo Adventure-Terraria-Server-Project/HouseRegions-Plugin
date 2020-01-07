@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -50,11 +49,11 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
       PluginTrace trace, PluginInfo pluginInfo, Configuration config, HousingManager housingManager,
       Func<Configuration> reloadConfigurationCallback
     ): base(trace) {
-      Contract.Requires<ArgumentNullException>(trace != null);
-      Contract.Requires<ArgumentException>(!pluginInfo.Equals(PluginInfo.Empty));
-      Contract.Requires<ArgumentNullException>(config != null);
-      Contract.Requires<ArgumentNullException>(housingManager != null);
-      Contract.Requires<ArgumentNullException>(reloadConfigurationCallback != null);
+      if (trace == null) throw new ArgumentNullException();
+      if (config == null) throw new ArgumentNullException();
+      if (housingManager == null) throw new ArgumentNullException();
+      if (reloadConfigurationCallback == null) throw new ArgumentNullException();
+      if (pluginInfo.Equals(PluginInfo.Empty)) throw new ArgumentException();
 
       this.PluginInfo = pluginInfo;
       this.Config = config;
@@ -1152,8 +1151,8 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
     }
     #endregion
 
-    private bool TryGetHouseRegionAtPlayer(TSPlayer player, out string owner, out Region region) {
-      Contract.Requires<ArgumentNullException>(player != null);
+    public bool TryGetHouseRegionAtPlayer(TSPlayer player, out string owner, out Region region) {
+      if (player == null) throw new ArgumentNullException();
 
       int dummy;
       if (!this.HousingManager.TryGetHouseRegionAtPlayer(player, out owner, out dummy, out region)) {
@@ -1164,8 +1163,8 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
       return true;
     }
 
-    private bool TryGetAccessibleHouseRegionAtPlayer(TSPlayer player, out string owner, out Region region) {
-      Contract.Requires<ArgumentNullException>(player != null);
+    public bool TryGetAccessibleHouseRegionAtPlayer(TSPlayer player, out string owner, out Region region) {
+      if (player == null) throw new ArgumentNullException();
 
       if (!this.TryGetHouseRegionAtPlayer(player, out owner, out region))
         return false;
