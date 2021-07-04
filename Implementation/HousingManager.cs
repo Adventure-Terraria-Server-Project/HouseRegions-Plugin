@@ -72,7 +72,7 @@ namespace Terraria.Plugins.CoderCow.HouseRegions {
         if (TShock.Regions.GetRegionByName(houseName) == null)
           break;
       }
-      if (houseIndex == maxHouses)
+      if (houseIndex > maxHouses)
         throw new LimitEnforcementException("Max amount of houses reached.");
 
       if (!TShock.Regions.AddRegion(
