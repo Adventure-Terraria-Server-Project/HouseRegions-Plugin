@@ -55,7 +55,7 @@
 
 $ErrorActionPreference = "Stop"
 
-Import-Module PowershellMarkdown
+#Import-Module PowershellMarkdown
 
 $outDir = "$PSScriptRoot\bin\Release"
 $assemblyInfoPath = "$PSScriptRoot\Properties\AssemblyInfo.cs"
@@ -71,8 +71,7 @@ $commitMessageFormat = "chore(version): tick plugin version {0}"
 $tagNameFormat = "release {0} for Terraria {1} (API {2})"
 $outZipFileNameFormat = "HouseRegions_{0}_API_{2}.zip"
 
-$gitHubUser = "CoderCow"
-$gitHubRepoOwner = "CoderCow"
+$gitHubRepoOwner = "Adventure-Terraria-Server-Project"
 $gitHubRepoName = "HouseRegions-Plugin"
 
 # information used to update the ressource on tshock.co
@@ -104,7 +103,7 @@ function Main {
   Write-Host "Release version will be $releaseVersion"
 
   $outChangelogFile = "$outDir\changelog.md"
-  $gitHubUrl = "https://github.com/$gitHubUser/$gitHubRepoName"
+  $gitHubUrl = "https://github.com/$gitHubRepoOwner/$gitHubRepoName"
   Generate-Changelog $pluginApiVersion $tshockVersion $terrariaVersion $outChangelogFile $gitHubUrl
 
   $outZipFile = "$outDir\" + ($outZipFileNameFormat -f $releaseVersion,$terrariaVersion,$pluginApiVersion)
@@ -116,9 +115,9 @@ function Main {
   Create-GitHubRelease $releaseVersion $outChangelogFile $outZipFile
   Start-Process "$gitHubUrl/releases"
 
-  Write-Host "Updating TShock resource..."
-  Update-TShockResource $releaseVersion $terrariaVersion $pluginApiVersion $outChangelogFile $gitHubUrl
-  Start-Process "$tshockResourceUri/updates"
+#  Write-Host "Updating TShock resource..."
+#  Update-TShockResource $releaseVersion $terrariaVersion $pluginApiVersion $outChangelogFile $gitHubUrl
+#  Start-Process "$tshockResourceUri/updates"
 }
 
 function Get-ApiVersion {
@@ -199,14 +198,14 @@ function Create-Commit($releaseVersion, $terrariaVersion, $pluginApiVersion) {
 }
 
 function Create-GitHubRelease($releaseVersion, $outChangelogFile, $outZipFile) {
-  $gitHubPassword = Read-Host "Enter password for GitHub user $gitHubUser"
+  $gitHubToken = Read-Host "Enter token for GitHub repo $gitHubRepoName"
 
   # This ensures that errors can be seen if they happen
   $ErrorActionPreference = "Continue"
 
   git push origin --follow-tags
-  GitReleaseManager.exe create -u $gitHubUser -p $gitHubPassword -o $gitHubRepoOwner -r $gitHubRepoName -n $releaseVersion -i $outChangelogFile -a $outZipFile
-  GitReleaseManager.exe publish -u $gitHubUser -p $gitHubPassword -o $gitHubRepoOwner -r $gitHubRepoName -t $releaseVersion
+  GitReleaseManager.exe create  --token $gitHubToken -o $gitHubRepoOwner -r $gitHubRepoName -n $releaseVersion -i $outChangelogFile -a $outZipFile
+  GitReleaseManager.exe publish --token $gitHubToken -o $gitHubRepoOwner -r $gitHubRepoName -t $releaseVersion
 }
 
 function Update-TShockResource($releaseVersion, $terrariaVersion, $pluginApiVersion, $changelogFile, $gitHubUrl) {
